@@ -1,3 +1,4 @@
+{{ config(schema='BSL_RT') }}
 with source as (
 
     {#-

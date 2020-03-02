@@ -1,3 +1,4 @@
+{{ config(schema='BCL_RT') }}
 with payments as (
 
     select * from {{ ref('stg_payments') }}

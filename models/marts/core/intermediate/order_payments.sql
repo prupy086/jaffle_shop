@@ -1,3 +1,4 @@
+{{ config(schema='BCL_RT') }}
 {% set payment_methods = ['credit_card', 'coupon', 'bank_transfer', 'gift_card'] %}
 
 with payments as (

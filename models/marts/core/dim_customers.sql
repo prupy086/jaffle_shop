@@ -1,3 +1,5 @@
+{{ config(schema='BLL_RT') }}
+
 with customers as (
 
     select * from {{ ref('stg_customers') }}

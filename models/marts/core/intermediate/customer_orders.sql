@@ -1,3 +1,4 @@
+{{ config(schema='BCL_RT') }}
 with orders as (
 
     select * from {{ ref('stg_orders') }}
