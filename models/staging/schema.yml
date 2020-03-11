@@ -29,3 +29,27 @@ models:
         tests:
           - accepted_values:
               values: ['credit_card', 'coupon', 'bank_transfer', 'gift_card']
+
+
+sources:
+  - name: WARP_SAL_RT_SS1_SCHEMA1
+    database: WARP_SAL_RT
+    schema: SS1_SCHEMA1
+    loader: emr # informational only (free text)
+    loaded_at_field: _loaded_at # configure for all sources
+    
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+      
+    tables:
+      - name: RAW_CUSTOMERS
+        identifier: RAW_CUSTOMERS
+        loaded_at_field: updated_at # override source defaults
+        columns:
+          - name: customer_id
+            tests:
+              - unique
+              
+        
