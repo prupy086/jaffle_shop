@@ -44,8 +44,8 @@ sources:
       identifier: false
       
     tables:
-      - name: RAW_CUSTOMERS
-        identifier: RAW_CUSTOMERS
+      - name: stream_RAW_CUSTOMERS
+        identifier: stream_RAW_CUSTOMERS
         loaded_at_field: updated_at # override source defaults
         columns:
           - name: customer_id
