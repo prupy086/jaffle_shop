@@ -5,7 +5,7 @@ with source as (
     Normally we would select from the table here, but we are using seeds to load
     our data in this project
     #}
-    select * from WARP_SAL_RT.SS1_SCHEMA1.RAW_CUSTOMERS
+    select * from {{ source('WARP_SAL_RT_SS1_SCHEMA1', 'stream_RAW_CUSTOMERS') }} --WARP_SAL_RT.SS1_SCHEMA1.RAW_CUSTOMERS
 
 ),
 
