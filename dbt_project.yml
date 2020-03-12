@@ -15,8 +15,9 @@ clean-targets:
     - "logs"
 
 models:
-  incremental:
+  jaffle_shop:
       materialized: table
+      transient: false
       staging:
         materialized: view
         tags: ["staging", "hourly"]
