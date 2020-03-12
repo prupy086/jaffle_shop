@@ -2,7 +2,8 @@
     config(
         materialized ='incremental',
         transient = 'false',
-        unique_key= ['country_id','header__timestamp']
+        unique_key= "country_id"
+        unique_key= "header__timestamp"
     )
 }}
 
