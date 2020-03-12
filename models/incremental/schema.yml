@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: countries_hist
+    columns:
+      - name: country_id
+        tests:
+          - unique
+          - not_null
+      - name: "header__timestamp"
+
+#   - name: stg_orders
+#     columns:
+#       - name: order_id
+#         tests:
+#           - unique
+#           - not_null
+#       - name: status
+#         tests:
+#           - accepted_values:
+#               values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
+
+#   - name: stg_payments
+#     columns:
+#       - name: payment_id
+#         tests:
+#           - unique
+#           - not_null
+#       - name: payment_method
+#         tests:
+#           - accepted_values:
+#               values: ['credit_card', 'coupon', 'bank_transfer', 'gift_card']
+
+
+# sources:
+#   - name: WARP_SAL_RT_SS1_SCHEMA1
+#     database: WARP_SAL_RT
+#     schema: SS1_SCHEMA1
+#     loader: emr # informational only (free text)
+#     loaded_at_field: _loaded_at # configure for all sources
+    
+#     quoting:
+#       database: false
+#       schema: false
+#       identifier: false
+      
+#     tables:
+#       - name: stream_RAW_CUSTOMERS
+#         identifier: stream_RAW_CUSTOMERS
+#         loaded_at_field: updated_at # override source defaults
+#         columns:
+#           - name: customer_id
+#             tests:
+#               - unique
+              
+        
