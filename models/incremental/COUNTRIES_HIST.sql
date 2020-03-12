@@ -2,7 +2,7 @@
     config(
         materialized ='incremental',
         transient = 'false',
-        unique_key = uqid 
+        unique_key = 'uqid' 
     )
 }}
 
