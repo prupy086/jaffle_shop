@@ -3,11 +3,10 @@ version: 2
 models:
   - name: countries_hist
     columns:
-      - name: country_id
+      - name: uqid
         tests:
           - unique
           - not_null
-      - name: "header__timestamp"
 
 #   - name: stg_orders
 #     columns:
