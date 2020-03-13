@@ -12,7 +12,10 @@ Select country_id ||'|'||CAST("header__change_seq" AS TEXT) as uqid
   ,ROW_NUMBER() over(partition by country_id order by "header__change_seq","header__timestamp","header__change_oper" )  as rnk
  from "SNOWFL_RT01"."ADMIN"."COUNTRIES__ct"
  where country_id in ( 'AE','SR')
-//    and "header__timestamp" > '2020-02-18 13:06:44.000'
+   {% if is_incremental() %}
+    and "header__timestamp" > (Select max("header__timestamp") from {{this}})
+   {% endif %}
+  
 ),
 delete_keys As
 (
@@ -99,7 +102,7 @@ delete_set_target
         ch.REGION_ID,
         ch.COUNTRY_ABR_NAME,
         ch.COUNTRY_PRESIDENT_NAME
-        ,CASE WHEN ch.END_TIME_RAW is null then dk."header__timestamp" end  as end_time
+        ,CASE WHEN ch.END_TIME is null then dk."header__timestamp" end  as end_time
         ,'Y' AS DELETE_MARKER
         ,dsd.UQID AS DELETED_BY_UQID
     from  {{ this}} ch
