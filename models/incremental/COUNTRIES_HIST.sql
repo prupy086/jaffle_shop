@@ -82,8 +82,9 @@ dsd2.DELETE_MARKER AS DELETE_MARKER
 left Join delete_set_delta2  dsd2
 on dsd.rnk <=dsd2.rnk
 and  dsd.rnk  between dsd2.rnk2 and dsd2.rnk)
- {% if is_incremental() %}
-,delete_set_target
+,
+{% if is_incremental() %}
+delete_set_target
  as (
    Select ch.UQID,
         ch."header__change_seq",
@@ -116,8 +117,7 @@ and  dsd.rnk  between dsd2.rnk2 and dsd2.rnk)
  Select * from delete_set_target
   {% endif %}
  )
-select * from final 
-;
+select * from final
  
  
 
