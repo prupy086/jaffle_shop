@@ -99,7 +99,7 @@ delete_set_target
         ch.REGION_ID,
         ch.COUNTRY_ABR_NAME,
         ch.COUNTRY_PRESIDENT_NAME
-        ,CASE WHEN ch.END_TIME_RAW is null then dk."header__timestamp" as end_time
+        ,CASE WHEN ch.END_TIME_RAW is null then dk."header__timestamp" end  as end_time
         ,'Y' AS DELETE_MARKER
         ,dsd.UQID AS DELETED_BY_UQID
     from  {{ this}} ch
