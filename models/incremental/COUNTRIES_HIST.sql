@@ -125,14 +125,14 @@ delete_set_target
         ch.REGION_ID,
         ch.COUNTRY_ABR_NAME,
         ch.COUNTRY_PRESIDENT_NAME
-        ,CASE WHEN ch.END_TIME is null then dsd."header__timestamp" end  as end_time
+        ,CASE WHEN ch.END_TIME is null then b."header__timestamp" end  as end_time
         ,NULL AS DELETE_MARKER
-        ,dsd.UQID AS DELETED_BY_UQID
+        ,b.UQID AS DELETED_BY_UQID
     from  {{ this}} ch
-    inner join non_delete_keys ndk
-    on ch.country_id = ndk.country_id
+    inner join base b
+    on ch.country_id = b.country_id
 	and ch.end_date = NULL
-	and (dsd."header__operation" <> 'DELETE' AND dsd.RNK  = 1 )
+	and (b."header__operation" <> 'DELETE' AND b.RNK  = 1 )
  ),
  {% endif %}
  final as 
