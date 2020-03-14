@@ -12,6 +12,7 @@ Select country_id ||'|'||CAST("header__change_seq" AS TEXT) as uqid
   ,ROW_NUMBER() over(partition by country_id order by "header__change_seq","header__timestamp","header__change_oper" )  as rnk
  from "SNOWFL_RT01"."ADMIN"."COUNTRIES__ct"
  where country_id in ( 'AE','SR')
+ AND  "header__operation" <> 'BEFOREIMAGE'
    {% if is_incremental() %}
     and "header__timestamp" > (Select max("header__timestamp") from {{this}})
    {% endif %}
@@ -46,16 +47,15 @@ b.COUNTRY_PRESIDENT_NAME
 from base b
 inner join non_delete_keys ndk
   on b.country_id = ndk.country_id
-WHERE   (b."header__operation" <> 'BEFOREIMAGE') 
- OR ( b."header__operation" = 'BEFOREIMAGE' AND RNK  = 1 )
+--WHERE   (b."header__operation" <> 'BEFOREIMAGE' ) 
 ),
 delete_set_delta as (
 Select b.*
   from base b
   inner join delete_keys dk
   on b.country_id = dk.country_id
-WHERE   (b."header__operation" <> 'BEFOREIMAGE') 
- OR ( b."header__operation" = 'BEFOREIMAGE' AND RNK  = 1 )
+--WHERE   (b."header__operation" <> 'BEFOREIMAGE') 
+-- OR ( b."header__operation" = 'BEFOREIMAGE' AND RNK  = 1 )
 )
 ,delete_set_delta2 as 
 (
@@ -110,6 +110,30 @@ delete_set_target
     on ch.country_id = dsd.country_id
    and (dsd."header__operation" = 'DELETE' AND dsd.RNK  = 1 )
  ),
+ update_set_target
+ as (
+   Select ch.UQID,
+        ch."header__change_seq",
+        ch."header__change_oper",
+        ch."header__change_mask",
+        ch."header__stream_position",
+        ch."header__operation",
+        ch."header__transaction_id",
+        ch."header__timestamp",
+        ch.COUNTRY_ID,
+        ch.COUNTRY_NAME,
+        ch.REGION_ID,
+        ch.COUNTRY_ABR_NAME,
+        ch.COUNTRY_PRESIDENT_NAME
+        ,CASE WHEN ch.END_TIME is null then dsd."header__timestamp" end  as end_time
+        ,NULL AS DELETE_MARKER
+        ,dsd.UQID AS DELETED_BY_UQID
+    from  {{ this}} ch
+    inner join non_delete_keys ndk
+    on ch.country_id = ndk.country_id
+	and ch.end_date = NULL
+	and (dsd."header__operation" <> 'DELETE' AND dsd.RNK  = 1 )
+ ),
  {% endif %}
  final as 
 ( Select * from upsert_delete_delta
@@ -118,14 +142,8 @@ delete_set_target
   {% if is_incremental() %}
  UNION all
  Select * from delete_set_target
+ UNION ALL
+ select * from update_set_target
   {% endif %}
  )
 select * from final
- 
- 
-
-               
-            
-
-
- 
