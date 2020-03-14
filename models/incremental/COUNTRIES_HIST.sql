@@ -131,7 +131,7 @@ delete_set_target
     from  {{ this}} ch
     inner join base b
     on ch.country_id = b.country_id
-	and ch.end_date = NULL
+	and ch.end_time = NULL
 	and (b."header__operation" <> 'DELETE' AND b.RNK  = 1 )
  ),
  {% endif %}
